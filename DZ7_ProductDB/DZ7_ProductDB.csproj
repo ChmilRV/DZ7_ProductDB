@@ -8,4 +8,8 @@
     <Folder Include="Views\HomeProduct\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.10" />
+  </ItemGroup>
+
 </Project>
