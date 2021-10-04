@@ -8,9 +8,9 @@ namespace DZ7_ProductDB.Models
 {
 	public partial class ProductContext: DbContext
 	{
-		public ProductContext()
-		{
-		}
+		//public ProductContext()
+		//{
+		//}
 		public ProductContext(DbContextOptions<ProductContext> options)
 			:base(options)
 		{
@@ -19,30 +19,30 @@ namespace DZ7_ProductDB.Models
 		public virtual DbSet<Product> Products { get; set; }
 
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			if (!optionsBuilder.IsConfigured)
-			{
-			}
-		}
+		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//{
+		//	if (!optionsBuilder.IsConfigured)
+		//	{
+		//	}
+		//}
 
-      protected override void OnModelCreating(ModelBuilder modelBuilder)
-      {
-         modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
+  //    protected override void OnModelCreating(ModelBuilder modelBuilder)
+  //    {
+  //       modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
 
-         //modelBuilder.Entity<Product>(entity =>
-         //{
-         //   entity.HasKey(e => e.Id);
+  //       //modelBuilder.Entity<Product>(entity =>
+  //       //{
+  //       //   entity.HasKey(e => e.Id);
 
-         //   entity.Property(e => e.Id).ValueGeneratedNever();
+  //       //   entity.Property(e => e.Id).ValueGeneratedNever();
 
-         //   entity.Property(e => e.Name).HasMaxLength(255);
-         //});
+  //       //   entity.Property(e => e.Name).HasMaxLength(255);
+  //       //});
 
-         OnModelCreatingPartial(modelBuilder);
-      }
+  //       OnModelCreatingPartial(modelBuilder);
+  //    }
 
-      partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+  //    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
    }
 }

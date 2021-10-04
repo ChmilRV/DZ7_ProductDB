@@ -19,8 +19,7 @@ namespace DZ7_ProductDB.Controllers
         // GET: BooksNews
         public async Task<IActionResult> Index()
         {
-            var products = _context.Products;
-            return View(await products.ToListAsync());
+            return View(await _context.Products.ToListAsync());
         }
 
         //// GET: BooksNews/Details/5
