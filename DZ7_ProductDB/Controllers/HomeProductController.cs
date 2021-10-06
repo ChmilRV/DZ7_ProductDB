@@ -1,174 +1,142 @@
 ﻿using DZ7_ProductDB.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DZ7_ProductDB.Controllers
 {
-    public class HomeProductController : Controller
-    {
-        private readonly ProductContext _context;
+	public class HomeProductController : Controller
+	{
+		private readonly ProductContext _context;
 
-        public HomeProductController(ProductContext context)
-        {
-            _context = context;
-        }
+		public HomeProductController(ProductContext context)
+		{
+			_context = context;
+		}
 
-        // GET: BooksNews
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Products.ToListAsync());
-        }
+		// GET: Product
+		public async Task<IActionResult> Index()
+		{
+			return View(await _context.Product.ToListAsync());
+		}
 
-        //// GET: BooksNews/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+		// GET: Product/Details/5
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-        //    var booksNew = await _context.BooksNews
-        //        .Include(b => b.Format)
-        //        .Include(b => b.Izd)
-        //        .Include(b => b.Kategory)
-        //        .Include(b => b.Themes)
-        //        .FirstOrDefaultAsync(m => m.N == id);
-        //    if (booksNew == null)
-        //    {
-        //        return NotFound();
-        //    }
+			var product = await _context.Product
+												 .FirstOrDefaultAsync(p => p.Id == id);
+			if (product == null)
+			{
+				return NotFound();
+			}
 
-        //    return View(booksNew);
-        //}
+			return View(product);
+		}
 
-        //// GET: BooksNews/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Format");
-        //    ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Izd");
-        //    ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Category");
-        //    ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Themes");
-        //    return View();
-        //}
+		// GET: Product/Create
+		public IActionResult Create()
+		{
+			return View();
+		}
 
-        //// POST: BooksNews/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("N,Code,New,Name,Price,Pages,Date,Pressrun,IzdId,FormatId,ThemesId,KategoryId")] BooksNew booksNew)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(booksNew);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Format", booksNew.FormatId);
-        //    ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Izd", booksNew.IzdId);
-        //    ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Category", booksNew.KategoryId);
-        //    ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Themes", booksNew.ThemesId);
-        //    return View(booksNew);
-        //}
+		// POST: Product/Create
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Create([Bind("Id,Name,Price,Number")] Product product)
+		{
+			if (ModelState.IsValid)
+			{
+				_context.Add(product);
+				await _context.SaveChangesAsync();
+				return RedirectToAction(nameof(Index));
+			}
+			return View(product);
+		}
 
-        //// GET: BooksNews/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+		// GET: Product/Edit/5
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
 
-        //    var booksNew = await _context.BooksNews.FindAsync(id);
-        //    if (booksNew == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Format", booksNew.FormatId);
-        //    ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Izd", booksNew.IzdId);
-        //    ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Category", booksNew.KategoryId);
-        //    ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Themes", booksNew.ThemesId);
-        //    return View(booksNew);
-        //}
+			var product = await _context.Product.FindAsync(id);
+			if (product == null)
+			{
+				return NotFound();
+			}
+			return View(product);
+		}
 
-        //// POST: BooksNews/Edit/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("N,Code,New,Name,Price,Pages,Date,Pressrun,IzdId,FormatId,ThemesId,KategoryId")] BooksNew booksNew)
-        //{
-        //    if (id != booksNew.N)
-        //    {
-        //        return NotFound();
-        //    }
+		// POST: Product/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Number")] Product product)
+		{
+			if (id != product.Id)
+			{
+				return NotFound();
+			}
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(booksNew);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!BooksNewExists(booksNew.N))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["FormatId"] = new SelectList(_context.SprFormats, "Id", "Id", booksNew.FormatId);
-        //    ViewData["IzdId"] = new SelectList(_context.SprIzds, "Id", "Id", booksNew.IzdId);
-        //    ViewData["KategoryId"] = new SelectList(_context.SprKategories, "Id", "Id", booksNew.KategoryId);
-        //    ViewData["ThemesId"] = new SelectList(_context.SprThemes, "Id", "Id", booksNew.ThemesId);
-        //    return View(booksNew);
-        //}
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					_context.Update(product);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!ProductExists(product.Id))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
+				return RedirectToAction(nameof(Index));
+			}
+			return View(product);
+		}
 
-        //// GET: BooksNews/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+		// GET: Product/Delete/5
+		public async Task<IActionResult> Delete(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			var product = await _context.Product.FirstOrDefaultAsync(p => p.Id == id);
+			if (product == null)
+			{
+				return NotFound();
+			}
+			return View(product);
+		}
 
-        //    var booksNew = await _context.BooksNews
-        //        .Include(b => b.Format)
-        //        .Include(b => b.Izd)
-        //        .Include(b => b.Kategory)
-        //        .Include(b => b.Themes)
-        //        .FirstOrDefaultAsync(m => m.N == id);
-        //    if (booksNew == null)
-        //    {
-        //        return NotFound();
-        //    }
+		// POST: Product/Delete/5
+		[HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
+			var product = await _context.Product.FindAsync(id);
+			_context.Product.Remove(product);
+			await _context.SaveChangesAsync();
+			return RedirectToAction(nameof(Index));
+		}
 
-        //    return View(booksNew);
-        //}
-
-        //// POST: BooksNews/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var booksNew = await _context.BooksNews.FindAsync(id);
-        //    _context.BooksNews.Remove(booksNew);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //private bool BooksNewExists(int id)
-        //{
-        //    return _context.BooksNews.Any(e => e.N == id);
-        //}
-    }
+		private bool ProductExists(int id)
+		{
+			return _context.Product.Any(p => p.Id == id);
+		}
+	}
 }
